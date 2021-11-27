@@ -2,7 +2,7 @@ package com.practice;
 
 import java.util.*;
 
-public class SameOrder {
+public class CompareOrder {
     public static void main(String[] args) {
         List<String> x = Arrays.asList("nnnnnnaabb", "fasasa");
         List<String> y = Arrays.asList("nnffbb", "hhttsss");
