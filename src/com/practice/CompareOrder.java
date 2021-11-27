@@ -23,7 +23,7 @@ public class CompareOrder {
             for(char c : y.get(i).toCharArray()){
                 map.put(c, map.getOrDefault(c, 0) - 1);
             }
-            long count = map.values().stream().filter(val -> val > 3).count();
+            long count = map.values().stream().filter(val -> Math.abs(val) > 3).count();
             if(count == 0) res.add("YES");
             else res.add("NO");
         }
@@ -48,7 +48,7 @@ public class CompareOrder {
     public static List<String> earlyLogout(List<String> logs, int maxTime){
         Map<String, int[]> map = new HashMap<>();
         List<String> res = new ArrayList<>();
-        logs.stream().forEach(log -> {
+        logs.forEach(log -> {
             String[] record = log.split(" ");
             if(!map.containsKey(record[0])) map.put(record[0], new int[2]);
             if("sign-in".equals(record[1]))
@@ -57,12 +57,11 @@ public class CompareOrder {
                 map.get(record[0])[1] = Integer.parseInt(record[2]);
         });
 
-        map.entrySet().forEach(entry -> {
-            int[] value = entry.getValue();
+        map.forEach((key, value) -> {
             if(value[0] != 0 && value[1] != 0 && value[1] - value[0] < maxTime)
-                res.add(entry.getKey());
+                res.add(key);
         });
-        res.sort(Comparator.comparing(userId -> Integer.parseInt(userId)));
+        res.sort(Comparator.comparing(Integer::parseInt));
         res.forEach(System.out::println);
         return res;
 
