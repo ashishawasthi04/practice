@@ -8,8 +8,8 @@ public class Experiments {
     static List<Person> persons = new ArrayList<>();
 
     public static void main(String[] args) {
-        Person p1 = new Person("Ashish", "Awasthi", 40);
-        Person p2 = new Person("Garima", "Dwivedi", 37);
+        Person p1 = new Person("Ashish", "Awasthi", 35);
+        Person p2 = new Person("Garima", "Dwivedi", 33);
         Person p3 = new Person("Mahika", "Awasthi", 10);
         Person p4 = new Person("Advik", "Awasthi", 4);
         Person p5 = new Person("Suman", "Dwivedi", 65);
@@ -19,7 +19,6 @@ public class Experiments {
         persons.add(p4);
         persons.add(p5);
 
-
         //comparators();
         //iterateMap();
         //treeMap();
@@ -27,6 +26,24 @@ public class Experiments {
         //arrayStream();
         //mapOperations();
         //stringNumSort();
+        //sortListOfIntegerArray();
+    }
+
+    public static void sortListOfIntegerArray(){
+        List<int[]> testArr = new ArrayList<>();
+        int[] arr1 = {1, 2, 3, 4, 5};
+        int[] arr2 = {0, 7, 8, 9, 10};
+        int[] arr3 = {1, 1, 13, 14, 15};
+        testArr.add(arr1);
+        testArr.add(arr2);
+        testArr.add(arr3);
+        Comparator<int[]> comparator = Comparator.comparing(arr -> arr[0]);
+        comparator = comparator.thenComparing(arr -> arr[1]);
+
+        testArr.sort(comparator);
+        System.out.println(Arrays.toString(testArr.get(0)));
+        System.out.println(Arrays.toString(testArr.get(1)));
+        System.out.println(Arrays.toString(testArr.get(2)));
     }
 
     public static void stringNumSort() {
@@ -57,6 +74,13 @@ public class Experiments {
 
     public static void arrayStream() {
         int[] arr = {6, 2, 9, 5, 4, 1, 7, 8, 3, 10};
+
+        //Reverse int[]
+        int[] rev = Arrays.stream(arr).boxed()
+                .sorted(Comparator.reverseOrder())
+                .mapToInt(Integer::intValue)
+                .toArray();
+        System.out.println(Arrays.toString(rev));
 
         //Filter and Print Even numbers
         Arrays.stream(arr).filter(num -> num % 2 == 0).forEach(System.out::println);

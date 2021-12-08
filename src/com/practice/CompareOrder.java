@@ -62,6 +62,5 @@ public class CompareOrder {
                 .collect(Collectors.toList());
         res.forEach(System.out::println);
         return res;
-
     }
 }
