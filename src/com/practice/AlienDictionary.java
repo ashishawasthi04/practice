@@ -1,8 +1,16 @@
 package com.practice;
 
 import java.util.*;
-
+//https://leetcode.com/problems/alien-dictionary/
 public class AlienDictionary {
+
+    public static void main(String[] args) {
+        AlienDictionary ad = new AlienDictionary();
+        String order = ad.alienOrder(new String[]{"wrt","wrf","er","ett","rftt"});
+        System.out.println(order);
+    }
+
+
     List<Integer>[] map = new List[26];
     int[] inOrder = new int[26];
 
