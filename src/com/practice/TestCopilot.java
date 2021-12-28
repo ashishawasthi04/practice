@@ -1,5 +1,7 @@
 package com.practice;
 
+import java.util.Arrays;
+
 class TestCopilot {
     static class TreeNode {
         int val;
@@ -69,7 +71,7 @@ class TestCopilot {
             sb.append("# ");
             return;
         }
-        sb.append(root.val + " ");
+        sb.append(root.val).append(" ");
         serialize(root.left, sb);
         serialize(root.right, sb);
     }
@@ -131,11 +133,11 @@ class TestCopilot {
     public static boolean duplicate(int[] arr) {
         int n = arr.length;
         int[] dp = new int[n];
-        for (int i = 0; i < n; i++) {
-            if (dp[arr[i]] == 1) {
+        for (int j : arr) {
+            if (dp[j] == 1) {
                 return true;
             }
-            dp[arr[i]] = 1;
+            dp[j] = 1;
         }
         return false;
     }
@@ -153,7 +155,7 @@ class TestCopilot {
 //            [1, 2, 3, 4, 2, 1]
 //            ^
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         int[] arr = new int[]{4, 2, 1, 3, 2, 1};
         System.out.println(findDuplicate(arr));
         arr = new int[]{5, 2, 1, 3, 1, 1};
@@ -221,4 +223,24 @@ class TestCopilot {
         dfs(grid, i, j-1);
     }
 
+    //Find prime number
+    public static void findPrime(int n){
+        boolean[] prime = new boolean[n+1];
+        Arrays.fill(prime, true);
+        prime[0] = prime[1] = false;
+        for(int i = 2; i <= n; i++){
+            if(prime[i]){
+                for(int j = 2; j*i <= n; j++){
+                    prime[i*j] = false;
+                }
+            }
+        }
+        for(int i = 0; i < prime.length; i++){
+            if(prime[i]) System.out.print(i+" ");
+        }
+    }
+
+    public static void main(String[] args) {
+        findPrime(200);
+    }
 }

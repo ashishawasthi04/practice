@@ -10,7 +10,6 @@ public class AlienDictionary {
         System.out.println(order);
     }
 
-
     List<Integer>[] map = new List[26];
     int[] inOrder = new int[26];
 
