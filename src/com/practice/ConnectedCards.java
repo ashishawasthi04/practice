@@ -4,7 +4,6 @@ import org.junit.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /************************** First Problem**********************
 While your players are waiting for a game, you've developed a solitaire game for the players to pass the time with.
