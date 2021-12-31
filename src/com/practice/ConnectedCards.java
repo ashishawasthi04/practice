@@ -4,8 +4,9 @@ import org.junit.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
-/*
+/************************** First Problem**********************
 While your players are waiting for a game, you've developed a solitaire game for the players to pass the time with.
 The player is given an NxM board of tiles from 0 to 9 like this:
   4   4   4   4
@@ -33,41 +34,38 @@ grid1 = [[4, 4, 4, 4],
 disappear(grid1, 0, 0)  => 5
 disappear(grid1, 1, 1)  => 4
 disappear(grid1, 1, 0)  => 4
-
  */
 public class ConnectedCards {
     static int[][] dir = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
-//    public static void main(String[] args) {
-//        int[][] grid1 =
-//                {{4, 4, 4, 4},
-//                {5, 5, 5, 4},
-//                {2, 5, 7, 5}};
-//        int[][] grid2 =
-//                {{0, 3, 3, 3, 3, 3, 3},
-//                {0, 1, 1, 1, 1, 1, 3},
-//                {0, 2, 2, 0, 2, 1, 4},
-//                {0, 1, 2, 2, 2, 1, 3},
-//                {0, 1, 1, 1, 1, 1, 3},
-//                {0, 0, 0, 0, 0, 0, 0}};
-//        int[][] grid3 = {{0}};
-//        int[][] grid4 =
-//                {{1, 1, 1},
-//                {1, 1, 1},
-//                {1, 1, 1}};
-//        int ans = disappear(grid1, 0, 0);
-//        System.out.println(ans);
-//
-//        Assert.assertEquals(5, disappear(grid1, 0, 0));
-//        Assert.assertEquals(disappear(grid1, 1, 1), 4);
-//        Assert.assertEquals(disappear(grid1, 1, 0), 4);
-//        Assert.assertEquals(disappear(grid2, 0, 0), 12);
-//        Assert.assertEquals(disappear(grid2, 3, 0), 12);
-//        Assert.assertEquals(disappear(grid2, 1, 1), 13);
-//        Assert.assertEquals(disappear(grid2, 2, 2), 6);
-//        Assert.assertEquals(disappear(grid2, 0, 3), 7);
-//        Assert.assertEquals(disappear(grid3, 0, 0), 1);
-//        Assert.assertEquals(disappear(grid4, 0, 0), 9);
-//    }
+    public static void main1(String[] args) {
+        int[][] grid1 =
+                {{4, 4, 4, 4},
+                {5, 5, 5, 4},
+                {2, 5, 7, 5}};
+        int[][] grid2 =
+                {{0, 3, 3, 3, 3, 3, 3},
+                {0, 1, 1, 1, 1, 1, 3},
+                {0, 2, 2, 0, 2, 1, 4},
+                {0, 1, 2, 2, 2, 1, 3},
+                {0, 1, 1, 1, 1, 1, 3},
+                {0, 0, 0, 0, 0, 0, 0}};
+        int[][] grid3 = {{0}};
+        int[][] grid4 =
+                {{1, 1, 1},
+                {1, 1, 1},
+                {1, 1, 1}};
+
+        Assert.assertEquals(5, disappear(grid1, 0, 0));
+        Assert.assertEquals(disappear(grid1, 1, 1), 4);
+        Assert.assertEquals(disappear(grid1, 1, 0), 4);
+        Assert.assertEquals(disappear(grid2, 0, 0), 12);
+        Assert.assertEquals(disappear(grid2, 3, 0), 12);
+        Assert.assertEquals(disappear(grid2, 1, 1), 13);
+        Assert.assertEquals(disappear(grid2, 2, 2), 6);
+        Assert.assertEquals(disappear(grid2, 0, 3), 7);
+        Assert.assertEquals(disappear(grid3, 0, 0), 1);
+        Assert.assertEquals(disappear(grid4, 0, 0), 9);
+    }
     public static int disappear(int[][] grid, int row, int col){
         return disappear(grid, row, col, grid[row][col]);
     }
@@ -86,7 +84,7 @@ public class ConnectedCards {
         return sum;
     }
 
-    /*.
+    /************************** Second Problem**********************
     11222 -> true
     21212 -> true
     1122233 -> false (more than one pair)
@@ -104,18 +102,12 @@ public class ConnectedCards {
     }
 
     public static boolean validInput(String input){
-        Map<Character, Integer> map = new HashMap<>();
-        for(char c : input.toCharArray()){
-            map.merge(c, 1, Integer::sum);
-        }
+        Map<Integer, Integer> map = new HashMap<>();
+        input.chars().forEach(c -> map.merge(c, 1, Integer::sum));
         boolean pairFound = false;
-        for(char key : map.keySet()){
-            int count = map.get(key);
-            if(count%3 != 0 && count%3 != 2) return false;
-            if(count%3 == 2) {
-                if(pairFound) return false;
-                pairFound = true;
-            }
+        for(Integer count : map.values()){
+            if((count%3 == 2 && pairFound) || (count%3 != 0 && count%3 != 2)) return false;
+            if(count%3 == 2) pairFound = true;
         }
         return pairFound;
     }
