@@ -14,10 +14,8 @@ public class TopKFrequent {
     private static int[] topKFrequent(int[] nums, int k) {
         int[] res = new int[k];
         Map<Integer, Integer> map = new HashMap<>();
-        Arrays.stream(nums).forEach(i -> {
-            map.put(i, map.getOrDefault(i, 0) + 1);
-        });
-        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.getValue()));
+        Arrays.stream(nums).forEach(i -> map.put(i, map.getOrDefault(i, 0) + 1));
+        Queue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(Comparator.comparingInt(Map.Entry::getValue));
         for(Map.Entry<Integer, Integer> entry : map.entrySet()){
             pq.offer(entry);
             if(pq.size() > k) pq.poll();
