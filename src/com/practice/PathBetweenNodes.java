@@ -84,12 +84,12 @@ public class PathBetweenNodes {
         }
         List<String> res = new ArrayList<>();
         while(firstPath.size() != count){
-            res.add("up");
+            res.add("Up");
             firstPath.removeLast();
         }
 
         while(secondPath.size() != count){
-            res.add(secondPath.get(count) == secondPath.get(count-1).left ? "left" : "right");
+            res.add(secondPath.get(count) == secondPath.get(count-1).left ? "Left" : "Right");
             secondPath.remove(count - 1);
         }
         System.out.println(String.join(", ", res));
