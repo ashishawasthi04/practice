@@ -97,12 +97,8 @@ public class PathBetweenNodes {
 
     public static boolean buildPath(Node node, int val, LinkedList<Node> path){
         if(node == null) return false;
-        if(node.val == val){
-            path.add(node);
-            return true;
-        }
         path.add(node);
-        if(buildPath(node.left, val, path) || buildPath(node.right, val, path)){
+        if(node.val == val || buildPath(node.left, val, path) || buildPath(node.right, val, path)){
             return true;
         }
         path.removeLast();
