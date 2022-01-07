@@ -68,17 +68,17 @@ public class PathBetweenNodes {
         root.right = new Node(6);
         root.left.left = new Node(4);
         root.left.right = new Node(5);
-        findPath(root, 8, 5);
+        findPath(root, 4, 6);
     }
 
     public static void findPath(Node root, int start, int end){
-        LinkedList<Node> firstPath = new LinkedList<>();
-        LinkedList<Node> secondPath = new LinkedList<>();
-        buildPath(root, start, firstPath);
-        buildPath(root, end, secondPath);
+        LinkedList<String> firstPath = new LinkedList<>();
+        LinkedList<String> secondPath = new LinkedList<>();
+        buildPath(root, start, firstPath, "");
+        buildPath(root, end, secondPath, "");
 
         int count = 0;
-        while(firstPath.get(count) == secondPath.get(count)){
+        while(firstPath.get(count).equals(secondPath.get(count))){
             count++;
             if(count >= firstPath.size() || count >= secondPath.size()) break;
         }
@@ -89,16 +89,18 @@ public class PathBetweenNodes {
         }
 
         while(secondPath.size() != count){
-            res.add(secondPath.get(count) == secondPath.get(count-1).left ? "Left" : "Right");
-            secondPath.remove(count - 1);
+            res.add(secondPath.get(count));
+            secondPath.remove(count);
         }
         System.out.println(String.join(", ", res));
     }
 
-    public static boolean buildPath(Node node, int val, LinkedList<Node> path){
+    public static boolean buildPath(Node node, int val, LinkedList<String> path, String dir){
         if(node == null) return false;
-        path.add(node);
-        if(node.val == val || buildPath(node.left, val, path) || buildPath(node.right, val, path)){
+        path.add(dir);
+        if(node.val == val
+                || buildPath(node.left, val, path, "Left")
+                || buildPath(node.right, val, path, "Right")){
             return true;
         }
         path.removeLast();
