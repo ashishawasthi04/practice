@@ -57,20 +57,20 @@ class AirportLanding {
         while(!pq.isEmpty()){
             int[] cur = pq.peek();
             if(inProcess == null){
-                System.out.println(cur[1] + " " + cur[0] + " ACCEPTED");
+                System.out.printf("%s %s %s%n", cur[1], cur[0], "ACCEPTED");
                 inProcess = pq.poll();
                 continue;
             }
             if(inProcess[1] + inProcess[2] > cur[1]){
-                System.out.println(cur[1] + " " + cur[0] + " POSTPONED");
+                System.out.printf("%s %s %s%n", cur[1], cur[0], "POSTPONED");
                 pq.poll();
                 pq.offer(new int[]{cur[0], 10 + cur[1], cur[2]});
             }
-            System.out.println((inProcess[1] + inProcess[2]) + " " + inProcess[0] + " LANDED");
+            System.out.printf("%s %s %s%n", inProcess[1] + inProcess[2], inProcess[0], "LANDED");
             inProcess = null;
         }
         if(inProcess != null) {
-            System.out.println((inProcess[1] + inProcess[2]) + " " + inProcess[0] + " LANDED");
+            System.out.printf("%s %s %s%n", inProcess[1] + inProcess[2], inProcess[0], "LANDED");
         }
     }
 }
