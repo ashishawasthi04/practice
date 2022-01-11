@@ -40,6 +40,9 @@ public class Experiments {
         Comparator<int[]> comparator = Comparator.comparing(arr -> arr[0]);
         comparator = comparator.thenComparing(arr -> arr[1]);
 
+        Comparator<int[]> comparator1 = Comparator.comparing(arr -> arr[1]);
+        comparator = comparator.thenComparing(arr -> arr[0]);
+
         testArr.sort(comparator);
         System.out.println(Arrays.toString(testArr.get(0)));
         System.out.println(Arrays.toString(testArr.get(1)));
