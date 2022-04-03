@@ -1,0 +1,75 @@
+package com.practice;
+
+import java.util.HashMap;
+import java.util.Map;
+/*
+Input: "mon 10:00 am"
+Output: "11000"
+Explanation: the first 1 is day so Sunday will be 7 for example. That's followed by 10 for the hour and 00 for the minute.
+
+The question is to generate the 5 minutes intervals between say
+
+"mon 10:00am" and "mon 11:00am"
+output ->11000, 11005, 11010, 11015 ... 11100
+
+ */
+public class Print5MinsIntervals {
+    static Map<String, Integer> dayMap = new HashMap<>();
+    public static void main(String[] args) {
+        init();
+        print("mon 10:00 am", "Tue11:00pm");
+    }
+    public static void init(){
+        dayMap.put("MON", 1);
+        dayMap.put("TUE", 2);
+        dayMap.put("WED", 3);
+        dayMap.put("THU", 4);
+        dayMap.put("FRI", 5);
+        dayMap.put("SAT", 6);
+        dayMap.put("SUN", 7);
+    }
+
+    public static void print(String start, String end){
+        int[] values1 = convert(start);
+        int[] values2 = convert(end);
+        String target = format(values2);
+        String source = format(values1);
+        System.out.println(source);
+        while (!source.equals(target)){
+            values1[2] += 5;
+            if (values1[2] == 60) {
+                values1[2] = 0;
+                values1[1]++;
+            }
+            if (values1[1] == 24) {
+                values1[1] = 0;
+                values1[0]++;
+            }
+            if (values1[0] > 7) values1[0] = 1;
+            source = format(values1);
+            System.out.println(source);
+        }
+    }
+
+    public static String format(int[] values){
+        StringBuilder sb = new StringBuilder();
+        sb.append(values[0]);
+        sb.append(values[1] < 10 ? "0" : "");
+        sb.append(values[1]);
+        sb.append(values[2] < 10 ? "0" : "");
+        sb.append(values[2]);
+        return sb.toString();
+    }
+
+    public static int[] convert(String time){
+        time = time.trim();
+        int length = time.length();
+        String day = time.substring(0, 3).toUpperCase();
+        String amPM = time.substring(length-2).toUpperCase();
+        String[] tokens = time.substring(3, length - 2).trim().split(":");
+        int hours = Integer.parseInt(tokens[0]);
+        int minutes = Integer.parseInt(tokens[1]);
+        hours += amPM.equals("PM") ? 12 : 0;
+        return new int[]{dayMap.get(day), hours, minutes};
+    }
+}

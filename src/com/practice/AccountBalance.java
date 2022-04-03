@@ -11,6 +11,7 @@ then one of the qualified outputs:
 "AC3 send 10 to AC2"
 "AC3 send 20 to AC4"]
 */
+
 import java.util.*;
 
 public class AccountBalance {
@@ -25,7 +26,8 @@ public class AccountBalance {
     }
 
     public static void main(String[] args) {
-        Account[] accounts = new Account[]{new Account("AC1", 120), new Account("AC2", 70),
+        Account[] accounts = new Account[]{
+                new Account("AC1", 120), new Account("AC2", 70),
                 new Account("AC3", 150), new Account("AC4", 80)};
         accountBalance(accounts);
     }
@@ -38,7 +40,7 @@ public class AccountBalance {
             minQueue.offer(acc);
             maxQueue.offer(acc);
         });
-        while(minQueue.peek().amount < 100){
+        while (!minQueue.isEmpty() && minQueue.peek().amount < 100) {
             Account minAcc = minQueue.poll();
             Account maxAcc = maxQueue.poll();
             int transferAmount = 100 - minAcc.amount;
