@@ -2,6 +2,7 @@ package com.practice;
 
 import java.util.HashMap;
 import java.util.Map;
+
 /*
 Input: "mon 10:00 am"
 Output: "11000"
@@ -15,11 +16,13 @@ output ->11000, 11005, 11010, 11015 ... 11100
  */
 public class Print5MinsIntervals {
     static Map<String, Integer> dayMap = new HashMap<>();
+
     public static void main(String[] args) {
         init();
         print("mon 10:00 am", "Tue11:00pm");
     }
-    public static void init(){
+
+    public static void init() {
         dayMap.put("MON", 1);
         dayMap.put("TUE", 2);
         dayMap.put("WED", 3);
@@ -29,13 +32,13 @@ public class Print5MinsIntervals {
         dayMap.put("SUN", 7);
     }
 
-    public static void print(String start, String end){
+    public static void print(String start, String end) {
         int[] values1 = convert(start);
         int[] values2 = convert(end);
         String target = format(values2);
         String source = format(values1);
         System.out.println(source);
-        while (!source.equals(target)){
+        while (!source.equals(target)) {
             values1[2] += 5;
             if (values1[2] == 60) {
                 values1[2] = 0;
@@ -51,21 +54,19 @@ public class Print5MinsIntervals {
         }
     }
 
-    public static String format(int[] values){
-        StringBuilder sb = new StringBuilder();
-        sb.append(values[0]);
-        sb.append(values[1] < 10 ? "0" : "");
-        sb.append(values[1]);
-        sb.append(values[2] < 10 ? "0" : "");
-        sb.append(values[2]);
-        return sb.toString();
+    public static String format(int[] values) {
+        return values[0] +
+                (values[1] < 10 ? "0" : "") +
+                values[1] +
+                (values[2] < 10 ? "0" : "") +
+                values[2];
     }
 
-    public static int[] convert(String time){
+    public static int[] convert(String time) {
         time = time.trim();
         int length = time.length();
         String day = time.substring(0, 3).toUpperCase();
-        String amPM = time.substring(length-2).toUpperCase();
+        String amPM = time.substring(length - 2).toUpperCase();
         String[] tokens = time.substring(3, length - 2).trim().split(":");
         int hours = Integer.parseInt(tokens[0]);
         int minutes = Integer.parseInt(tokens[1]);
