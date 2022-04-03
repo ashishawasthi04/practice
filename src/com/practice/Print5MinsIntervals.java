@@ -6,12 +6,9 @@ import java.util.*;
 Input: "mon 10:00 am"
 Output: "11000"
 Explanation: the first 1 is day so Sunday will be 7 for example. That's followed by 10 for the hour and 00 for the minute.
-
 The question is to generate the 5 minutes intervals between say
-
 "mon 10:00am" and "mon 11:00am"
 output ->11000, 11005, 11010, 11015 ... 11100
-
  */
 public class Print5MinsIntervals {
     static List<String> daysList = daysList = Arrays.asList("", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN");
