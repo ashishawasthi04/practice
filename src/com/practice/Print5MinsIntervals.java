@@ -1,7 +1,6 @@
 package com.practice;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*
 Input: "mon 10:00 am"
@@ -15,21 +14,10 @@ output ->11000, 11005, 11010, 11015 ... 11100
 
  */
 public class Print5MinsIntervals {
-    static Map<String, Integer> dayMap = new HashMap<>();
+    static List<String> daysList = daysList = Arrays.asList("", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN");
 
     public static void main(String[] args) {
-        init();
         print("mon 10:00 am", "Tue11:00pm");
-    }
-
-    public static void init() {
-        dayMap.put("MON", 1);
-        dayMap.put("TUE", 2);
-        dayMap.put("WED", 3);
-        dayMap.put("THU", 4);
-        dayMap.put("FRI", 5);
-        dayMap.put("SAT", 6);
-        dayMap.put("SUN", 7);
     }
 
     public static void print(String start, String end) {
@@ -66,11 +54,11 @@ public class Print5MinsIntervals {
         time = time.trim();
         int length = time.length();
         String day = time.substring(0, 3).toUpperCase();
-        String amPM = time.substring(length - 2).toUpperCase();
+        boolean isPM = "PM".equals(time.substring(length - 2).toUpperCase());
         String[] tokens = time.substring(3, length - 2).trim().split(":");
         int hours = Integer.parseInt(tokens[0]);
         int minutes = Integer.parseInt(tokens[1]);
-        hours += amPM.equals("PM") ? 12 : 0;
-        return new int[]{dayMap.get(day), hours, minutes};
+        hours += isPM ? 12 : 0;
+        return new int[]{daysList.indexOf(day), hours, minutes};
     }
 }
