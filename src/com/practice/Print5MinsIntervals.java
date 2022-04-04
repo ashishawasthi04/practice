@@ -50,10 +50,10 @@ public class Print5MinsIntervals {
         time = time.trim();
         int length = time.length();
         String day = time.substring(0, 3).toUpperCase();
-        boolean isPM = "PM".equals(time.substring(length - 2).toUpperCase());
         String[] tokens = time.substring(3, length - 2).trim().split(":");
         int hours = Integer.parseInt(tokens[0].trim());
         int minutes = Integer.parseInt(tokens[1].trim());
+        boolean isPM = "PM".equals(time.substring(length - 2).toUpperCase());
         hours += isPM ? 12 : 0;
         return new int[]{daysList.indexOf(day), hours, minutes};
     }
