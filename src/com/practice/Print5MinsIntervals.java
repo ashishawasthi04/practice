@@ -22,7 +22,7 @@ public class Print5MinsIntervals {
         int[] values2 = convert(end);
         String target = format(values2);
         String source = format(values1);
-        while (Integer.parseInt(source) <= Integer.parseInt(target)) {
+        while (source.compareTo(target) <= 0) {
             System.out.println(source);
             values1[2] += 5;
             if (values1[2] >= 60) {
@@ -52,8 +52,8 @@ public class Print5MinsIntervals {
         String day = time.substring(0, 3).toUpperCase();
         boolean isPM = "PM".equals(time.substring(length - 2).toUpperCase());
         String[] tokens = time.substring(3, length - 2).trim().split(":");
-        int hours = Integer.parseInt(tokens[0]);
-        int minutes = Integer.parseInt(tokens[1]);
+        int hours = Integer.parseInt(tokens[0].trim());
+        int minutes = Integer.parseInt(tokens[1].trim());
         hours += isPM ? 12 : 0;
         return new int[]{daysList.indexOf(day), hours, minutes};
     }
