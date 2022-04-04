@@ -14,7 +14,7 @@ public class Print5MinsIntervals {
     static List<String> daysList = daysList = Arrays.asList("", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN");
 
     public static void main(String[] args) {
-        print("mon 10:00 am", "Tue11:00pm");
+        print("mon 10:03 am", "Tue11:06pm");
     }
 
     public static void print(String start, String end) {
@@ -22,11 +22,11 @@ public class Print5MinsIntervals {
         int[] values2 = convert(end);
         String target = format(values2);
         String source = format(values1);
-        System.out.println(source);
-        while (!source.equals(target)) {
+        while (Integer.parseInt(source) <= Integer.parseInt(target)) {
+            System.out.println(source);
             values1[2] += 5;
-            if (values1[2] == 60) {
-                values1[2] = 0;
+            if (values1[2] >= 60) {
+                values1[2] %= 60;
                 values1[1]++;
             }
             if (values1[1] == 24) {
@@ -35,7 +35,6 @@ public class Print5MinsIntervals {
             }
             if (values1[0] > 7) values1[0] = 1;
             source = format(values1);
-            System.out.println(source);
         }
     }
 
