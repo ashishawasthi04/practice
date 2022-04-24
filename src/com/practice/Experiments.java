@@ -29,7 +29,7 @@ public class Experiments {
         //sortListOfIntegerArray();
     }
 
-    public static void sortListOfIntegerArray(){
+    public static void sortListOfIntegerArray() {
         List<int[]> testArr = new ArrayList<>();
         int[] arr1 = {1, 2, 3, 4, 5};
         int[] arr2 = {0, 7, 8, 9, 10};
