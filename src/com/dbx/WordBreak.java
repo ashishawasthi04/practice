@@ -20,7 +20,7 @@ public class WordBreak {
 Complexity Analysis - N is the length of the input string.
     - Time complexity : O(n^3)
     For every starting index, the search can continue till the end of the given string.
-    - Space complexity : O(n). Queue of at most nn size is needed.
+    - Space complexity : O(n). Queue of at most n size is needed.
 */
     public boolean wordBreakBFS(String s, List<String> wordDict) {
         Set<String> wordDictSet = new HashSet<>(wordDict);

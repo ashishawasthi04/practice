@@ -15,14 +15,13 @@ public class TokenBucket {
     private long lastFillTimeStamp;
 
     final Lock lock = new ReentrantLock();
-    final Condition notFull = lock.newCondition();
-    final Condition notEmpty = lock.newCondition();
+    final Condition removed = lock.newCondition();
+    final Condition added = lock.newCondition();
 
     public TokenBucket(int maxCapacity, int fillRate) {
         this.MAX_CAPACITY = maxCapacity;
         this.FILL_RATE = fillRate;
         lastFillTimeStamp = System.currentTimeMillis();
-
         bucket = new ArrayList<>();
     }
 
@@ -30,7 +29,7 @@ public class TokenBucket {
         lock.lock();
         while (bucket.size() == MAX_CAPACITY) {
             System.out.println("Bucket is filled now.");
-            notFull.await();
+            removed.await();
         }
         long now = System.currentTimeMillis();
         //System.out.println((now - lastFillTimeStamp)/1000 * FILL_RATE);
@@ -40,9 +39,8 @@ public class TokenBucket {
         for (int i = 0; i < numTokensToAdd; i++) { //add tokens
             bucket.add((int) (Math.random() * 100) + 1);
         }
-        notEmpty.signalAll();
+        added.signalAll();
         lock.unlock();
-
     }
 
     public List<Integer> get(int n) throws InterruptedException {
@@ -56,18 +54,16 @@ public class TokenBucket {
         int tokenAcquired = 0;
         while (tokenAcquired < n) { //this can ensure fair competition
             lock.lock();
-            while (bucket.size() < 1) {
+            while (bucket.size() == 0) {
                 System.out.println("Bucket is not enough now.");
-                notEmpty.await();
+                added.await();
             }
             result.add(bucket.get(bucket.size() - 1));
             bucket.remove(bucket.size() - 1);
             tokenAcquired++;
-            notFull.signalAll();
+            removed.signalAll();
             lock.unlock();
-
         }
-
         return result;
     }
 

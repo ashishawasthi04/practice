@@ -16,7 +16,7 @@ Write -> read
 should always grant for writer
 */
 public class ReadWriteLock2 {
-    private final Map<Thread, Integer> readingThreads = new HashMap<Thread, Integer>();
+    private final Map<Thread, Integer> readingThreads = new HashMap<>();
     private int writeAccesses = 0;
     private int writeRequests = 0;
     private Thread writingThread = null;
@@ -32,9 +32,8 @@ public class ReadWriteLock2 {
     }
 
     private boolean canGrantReadAccess(Thread callingThread) {
-        if (isWriter(callingThread)) return true;
+        if (isWriter(callingThread) || isReader(callingThread)) return true;
         if (hasWriter()) return false;
-        if (isReader(callingThread)) return true;
         return !hasWriteRequests();
     }
 
@@ -84,22 +83,20 @@ public class ReadWriteLock2 {
     }
 
     private int getReadAccessCount(Thread callingThread) {
-        Integer accessCount = readingThreads.get(callingThread);
-        if (accessCount == null) return 0;
-        return accessCount;
+        return readingThreads.getOrDefault(callingThread, 0);
     }
 
     private boolean hasReaders() {
-        return readingThreads.size() > 0;
+        return !readingThreads.isEmpty();
     }
 
     private boolean isReader(Thread callingThread) {
-        return readingThreads.get(callingThread) != null;
+        return readingThreads.containsKey(callingThread);
     }
 
     private boolean isOnlyReader(Thread callingThread) {
         return readingThreads.size() == 1 &&
-                readingThreads.get(callingThread) != null;
+                readingThreads.containsKey(callingThread);
     }
 
     private boolean hasWriter() {

@@ -12,22 +12,23 @@ public class PhoneNumberDictionary {
         List<String> combinations = new ArrayList<>();
         if (digits == null || digits.length() < 1) return combinations;
 
-        findCombinations(combinations, new StringBuilder(), digits, 0);
+        findCombinations(combinations, new StringBuilder(), digits);
 
         return combinations;
     }
 
-    public void findCombinations(List<String> combinations, StringBuilder sb, String digits, int i) {
+    public void findCombinations(List<String> combinations, StringBuilder sb, String digits) {
+        int i = sb.length();
         if (i == digits.length()) {
             String comb = sb.toString();
             if (isWord(comb))
                 combinations.add(comb);
         } else {
-            String keyLetters = KEYS[digits.charAt(i) - '0'];
-            for (int k = 0; k < keyLetters.length(); k++) {
-                sb.append(keyLetters.charAt(k));
-                findCombinations(combinations, sb, digits, i + 1);
-                sb.setLength(sb.length() - 1);
+            char[] letters = KEYS[digits.charAt(i) - '0'].toCharArray();
+            for (char letter : letters) {
+                sb.append(letter);
+                findCombinations(combinations, sb, digits);
+                sb.setLength(i);
             }
         }
     }
@@ -50,8 +51,8 @@ public class PhoneNumberDictionary {
 
 
     //Follow up: Trie Tree
-    class Trie {
-        private class Node {
+    static class Trie {
+        private static class Node {
             Map<Character, Node> children;
             boolean isWord;
 
@@ -61,7 +62,7 @@ public class PhoneNumberDictionary {
             }
         }
 
-        private Node root;
+        private final Node root;
 
         // Initialize your data structure here.
         public Trie() {

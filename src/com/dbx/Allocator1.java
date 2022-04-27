@@ -7,11 +7,8 @@ import java.util.Set;
 
 /*
 Things to consider:
-what happens if all IDs used up? throws Exception or return -1
-
-release invalid ID or release id that is not allocated, how to handle? just return or throw Exception??
-what happens if all IDs used up? throws Exception or return -1
-release invalid ID or release id that is not allocated, how to handle? just return or throw Exception??
+What happens if all IDs used up? throws Exception or return -1
+Release invalid ID or release id that is not allocated, how to handle? just return or throw Exception??
 
 FreeList approach:
 Space is O(n), heavy, because of the data structure of queue and set too
@@ -46,8 +43,6 @@ public class Allocator1 {
     }
 
     public boolean check(int id) {
-        // unnecessary check, the set contains can handle
-        // if(id<0 || id>=MAX_ID) return false;
         return !allocated.contains(id);
     }
 
@@ -66,6 +61,5 @@ public class Allocator1 {
 
         allocator.release(2);
         System.out.println(allocator.check(id3));
-
     }
 }

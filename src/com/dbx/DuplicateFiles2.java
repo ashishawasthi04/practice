@@ -112,6 +112,7 @@ public class DuplicateFiles2 {
                 fileSizeMap.get(size).add(currPath);
             } else if (file.isDirectory()) {
                 String[] subDir = file.list();
+                assert subDir != null;
                 for (String dir : subDir) {
                     s.push(currPath + "/" + dir);
                 }
@@ -143,12 +144,13 @@ public class DuplicateFiles2 {
     }
 
     private static String convertByteArrayToHexString(byte[] arrayBytes) {
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < arrayBytes.length; i++) {
-            stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16)
-                    .substring(1));
+        StringBuilder sb = new StringBuilder();
+        for (byte arrayByte : arrayBytes) {
+            //This String.format is the easiest and obvious way to convert a byte arrays into a hex,
+            // %02x for lower case hex, %02X upper case hex.
+            sb.append(String.format("%02X", arrayByte));
         }
-        return stringBuffer.toString();
+        return sb.toString();
     }
 
     public static void main(String[] args) throws Exception {
@@ -162,16 +164,13 @@ public class DuplicateFiles2 {
     // How to check the file types in Linux:
     // Linux has different APIs e.g. is_regular_file(), is_block_file etc.
     // How to hash 1KB each time:
-    public void read1KBEachTime(String path)
-            throws FileNotFoundException, IOException {
+    public void read1KBEachTime(String path) throws FileNotFoundException, IOException {
         File file = new File(path);
         FileInputStream fis = new FileInputStream(file);
         byte[] buffer = new byte[1024];
-        int count;
-        while ((count = fis.read(buffer)) != -1) {
+        while (fis.read(buffer) != -1) {
             // hash(buffer);
-            System.out.print(buffer);
-            count = fis.read(buffer);
+            System.out.print(Arrays.toString(buffer));
         }
     }
 }

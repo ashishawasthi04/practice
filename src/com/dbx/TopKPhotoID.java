@@ -57,7 +57,7 @@ public class TopKPhotoID {
     // Approach 2: Using k-min heap to maintain k most viewed. nlogk
     public List<Integer> topKViewPhoto2(int[] photoIds, int k) {
         List<Integer> result = new ArrayList<>();
-        if (photoIds == null || photoIds.length < 1) return result;
+        if (photoIds == null || photoIds.length == 0) return result;
 
         Map<Integer, Integer> freqMap = new HashMap<>();
         for (int id : photoIds) {
@@ -69,10 +69,9 @@ public class TopKPhotoID {
         for (Map.Entry<Integer, Integer> freqEntry : freqMap.entrySet()) {
             View view = new View(freqEntry.getKey(), freqEntry.getValue());
             if (topKView.size() < k) {
-                topKView.add(view);
+                topKView.offer(view);
             } else {
-                assert topKView.peek() != null;
-                if (freqEntry.getValue() > topKView.peek().freq) {
+                if (!topKView.isEmpty() && freqEntry.getValue() > topKView.peek().freq) {
                     topKView.poll();
                     topKView.offer(view);
                 }

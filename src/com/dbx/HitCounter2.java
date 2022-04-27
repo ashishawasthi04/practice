@@ -8,7 +8,7 @@ package com.dbx;
 //circular array
 public class HitCounter2 {
     private final int WINDOW_LENGTH; // in sec
-    private Hit[] hitRecords;
+    private final Hit[] hitRecords;
     private int lastHitTime;
 
     public HitCounter2(int windowLength) {
@@ -40,7 +40,7 @@ public class HitCounter2 {
         return (int) System.currentTimeMillis() / 1000;
     }
 
-    private class Hit {
+    private static class Hit {
         int timeStamp;
         int count;
 
@@ -64,7 +64,7 @@ public class HitCounter2 {
 Multi-threading:
 use BlockingQueue, LinkedBlockingQueue is not bounded
 synchronised the modification and reading from queue
-Use ConcurrentHashMap, it is not blocking on the whole collection when write,
+Use ConcurrentHashMap, it is not blocking on the whole collection when written,
 so can have multiple writes at the same time, read is non-blocking, using volatile.
 This is achieved by partitioning Map into different parts based on concurrency level and locking only
 a portion of Map during updates.

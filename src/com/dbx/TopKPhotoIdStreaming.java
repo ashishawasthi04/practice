@@ -5,56 +5,46 @@ import java.util.*;
 /*
     For streaming:
     - The problem here is we cannot increase/ decrease value of priority queue, to remove it and re-add, the remove is O(k).
-    - What we can do better is to implement the min heap ourselves, and do the keyAdjust heapify, which will be O(logk)
+    - What we can do better is to implement the min heap ourselves, and do the keyAdjust heap, which will be O(logk)
     - **Check data structure heap
 */
-class PhotoView implements Comparable<PhotoView> {
-    int id;
-    int freq;
+class PhotoView {
+    int id, freq;
 
     public PhotoView(int id, int freq) {
         this.id = id;
         this.freq = freq;
     }
-
-    @Override
-    public int compareTo(PhotoView other) {
-        if (this.freq == other.freq) {
-            return other.id - this.id;
-        }
-        return this.freq - other.freq;
-    }
 }
 
 class MaxPhotoID {
-    private final PriorityQueue<PhotoView> kMostViewPhotos;
+    private final Queue<PhotoView> kMostViewPhotos;
     private final Map<Integer, PhotoView> photoViewFreqMap;
     private final int k;
 
     public MaxPhotoID(int k) {
         this.k = k;
-        kMostViewPhotos = new PriorityQueue<>();
         photoViewFreqMap = new HashMap<>();
+        Comparator<PhotoView> comp = Comparator.comparing(view -> view.freq);
+        comp = comp.thenComparing(view -> -view.id);
+        kMostViewPhotos = new PriorityQueue<>(comp);
     }
 
-    public void view(int id) {
-        if (!photoViewFreqMap.containsKey(id)) {
-            photoViewFreqMap.put(id, new PhotoView(id, 0));
-        }
+    public void addPhoto(int id) {
+        photoViewFreqMap.putIfAbsent(id, new PhotoView(id, 0));
         PhotoView view = photoViewFreqMap.get(id);
         view.freq++;
 
-        if (kMostViewPhotos.size() < k ||
-                view.freq >= kMostViewPhotos.peek().freq) {
+        if (!kMostViewPhotos.isEmpty() && view.freq >= kMostViewPhotos.peek().freq) {
             kMostViewPhotos.remove(view);
             kMostViewPhotos.offer(view);
             if (kMostViewPhotos.size() > k)
                 kMostViewPhotos.poll();
-        }
+        }else kMostViewPhotos.offer(view);
     }
 
     public List<Integer> getTopKViewPhoto() {
-        PhotoView[] topK = kMostViewPhotos.toArray(new PhotoView[kMostViewPhotos.size()]);
+        PhotoView[] topK = kMostViewPhotos.toArray(PhotoView[]::new);
         List<Integer> result = new ArrayList<>();
         for (PhotoView photoView : topK) {
             result.add(photoView.id);
@@ -66,25 +56,25 @@ class MaxPhotoID {
 public class TopKPhotoIdStreaming {
     public static void main(String[] args) {
         MaxPhotoID solver = new MaxPhotoID(4);
-        solver.view(1);
-        solver.view(2);
-        solver.view(1);
+        solver.addPhoto(1);
+        solver.addPhoto(2);
+        solver.addPhoto(1);
         System.out.println(solver.getTopKViewPhoto());
-        solver.view(3);
+        solver.addPhoto(3);
 
         System.out.println(solver.getTopKViewPhoto());
-        solver.view(2);
-        solver.view(12);
-        solver.view(31);
-        solver.view(101);
-        solver.view(11);
-        solver.view(3);
+        solver.addPhoto(2);
+        solver.addPhoto(12);
+        solver.addPhoto(31);
+        solver.addPhoto(101);
+        solver.addPhoto(11);
+        solver.addPhoto(3);
         System.out.println(solver.getTopKViewPhoto());
 
-        solver.view(31);
-        solver.view(101);
-        solver.view(31);
-        solver.view(101);
+        solver.addPhoto(31);
+        solver.addPhoto(101);
+        solver.addPhoto(31);
+        solver.addPhoto(101);
         System.out.println(solver.getTopKViewPhoto());
     }
 }

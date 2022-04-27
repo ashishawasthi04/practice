@@ -8,7 +8,7 @@ public class WebCrawlerMultiThread {
     http://scrumbucket.org/tutorials/neo4j-site-crawler/part-2-create-multi-threaded-crawl-manager/
     Multithreading version:
         - since the most time-consuming part is the getUrls(url) function,
-        we can use a Master/slave approach to parallel processing the getUrls(url),
+        we can use a Leader/Follower approach to parallel processing the getUrls(url),
         - The benefit of also making the read write of result set parallel does not justify sync overhead.
         So, prefer just the master thread to do it.
     */
@@ -16,9 +16,9 @@ public class WebCrawlerMultiThread {
         public static final int THREAD_COUNT = 10;
         private static final long PAUSE_TIME = 1000;
 
-        private Set<String> result = new HashSet<>();
-        private List<Future<List<String>>> futures = new ArrayList<>();
-        private ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
+        private final Set<String> result = new HashSet<>();
+        private final List<Future<List<String>>> futures = new ArrayList<>();
+        private final ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
         private static Map<String, List<String>> connectedUrls;
 
 
@@ -29,12 +29,20 @@ public class WebCrawlerMultiThread {
         public List<String> crawl(String startUrl) {
             submitNewUrl(startUrl);
             try {
-                while (checkCrawlerResults()) ;
-            } catch (InterruptedException e) {
-
-            }
+                while (checkCrawlerResults()){};
+            } catch (InterruptedException ignored) {}
             executor.shutdown();
             return new ArrayList<>(result);
+        }
+
+        public void submitNewUrl(String url) {
+            if (!result.contains(url)) {
+                result.add(url);
+
+                Crawler crawler = new Crawler(url);
+                Future<List<String>> future = executor.submit(crawler);
+                futures.add(future);
+            }
         }
 
         public boolean checkCrawlerResults() throws InterruptedException {
@@ -48,28 +56,15 @@ public class WebCrawlerMultiThread {
                     iterator.remove();
                     try {
                         newUrls.addAll(future.get());
-                    } catch (ExecutionException e) {
-
-                    }
+                    } catch (ExecutionException ignored) {}
                 }
             }
-
-            // do this after the while iterator because submitNewUrl will change the futures array list,
+            // Do this after the while iterator because submitNewUrl will change the futures array list,
             // will cause concurrent modification error
             for (String url : newUrls) {
                 submitNewUrl(url);
             }
             return futures.size() > 0;
-        }
-
-        public void submitNewUrl(String url) {
-            if (!result.contains(url)) {
-                result.add(url);
-
-                Crawler crawler = new Crawler(url);
-                Future<List<String>> future = executor.submit(crawler);
-                futures.add(future);
-            }
         }
 
         private static class Crawler implements Callable<List<String>> {
