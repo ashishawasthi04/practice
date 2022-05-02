@@ -1,10 +1,10 @@
 package com.misc;
 
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testng.AssertJUnit.assertEquals;
 
 
 public class ProblemSetTest {

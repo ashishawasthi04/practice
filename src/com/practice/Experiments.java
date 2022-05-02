@@ -16,7 +16,7 @@ public class Experiments {
         persons.add(p1);
         persons.add(p2);
         persons.add(p3);
-        persons.add(p4);
+        persons.add(p4);                                   
         persons.add(p5);
 
         //comparators();
@@ -61,8 +61,7 @@ public class Experiments {
                 .filter(wordArr -> (wordArr[0].length() <= 5 && wordArr[0].length() >= 2))
                 //IMP: Long String comparison, Sort in decreasing order
                 .sorted(Comparator.comparingLong(wordArr -> -Long.parseLong(wordArr[1])))
-                .limit(3)
-                .collect(Collectors.toList());
+                .limit(3).toList();
         result.forEach(wordArr -> System.out.println(Arrays.toString(wordArr)));
     }
 
@@ -114,7 +113,6 @@ public class Experiments {
         while (!queue.isEmpty()) {
             System.out.println(queue.poll());
         }
-
     }
 
     public static void treeMap() {
@@ -171,7 +169,6 @@ public class Experiments {
                 .reversed();
         persons.sort(comparator4);
         print();
-
     }
 
     public static void print() {

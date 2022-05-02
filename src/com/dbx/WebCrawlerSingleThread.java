@@ -1,7 +1,8 @@
 package com.dbx;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.platform.commons.util.StringUtils;
 
